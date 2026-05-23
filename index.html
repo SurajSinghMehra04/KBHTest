@@ -1,0 +1,774 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kon Banega Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07070f;--bg2:#0f0f1c;--bg3:#181828;--card:#1c1c2e;--card2:#232336;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#eeeeff;--text2:#8888b0;--text3:#55558a;--accent:#7c6cff;--accent2:#b0a2ff;--green:#3ddcae;--amber:#ffb84d;--red:#ff5e7d;--easy:#3ddcae;--mod:#ffb84d;--hard:#ff5e7d;--gold:#ffd700}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Syne',sans-serif}
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.10;animation:floatOrb 14s ease-in-out infinite}
+.orb1{width:600px;height:600px;background:#7c6cff;top:-150px;left:-150px;animation-delay:0s}
+.orb2{width:450px;height:450px;background:#3ddcae;bottom:-100px;right:-100px;animation-delay:5s}
+.orb3{width:350px;height:350px;background:#ff5e7d;top:45%;left:45%;animation-delay:9s}
+@keyframes floatOrb{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(25px,-25px) scale(1.04)}66%{transform:translate(-18px,18px) scale(0.96)}}
+.wrap{position:relative;z-index:1;min-height:100vh}
+nav{display:flex;align-items:center;justify-content:space-between;padding:18px 36px;border-bottom:1px solid var(--border);backdrop-filter:blur(24px);background:rgba(7,7,15,0.85);position:sticky;top:0;z-index:100}
+.logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:10px}
+.logo-text{background:linear-gradient(135deg,#ffb84d,#ff5e7d,#b0a2ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-sub{font-size:11px;color:var(--text3);font-weight:400;letter-spacing:2px;text-transform:uppercase;display:block;line-height:1}
+.nav-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn{padding:9px 20px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;border:none}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent2)}
+.btn-primary{background:linear-gradient(135deg,#7c6cff,#b0a2ff);color:#fff}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(124,108,255,.38)}
+.btn-danger{background:rgba(255,94,125,.12);border:1px solid rgba(255,94,125,.28);color:var(--red)}
+.btn-sm{padding:7px 14px;font-size:13px}
+.user-badge{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--card);border-radius:30px;border:1px solid var(--border);font-size:13px}
+.points-pill{background:rgba(255,184,77,.12);border:1px solid rgba(255,184,77,.28);color:var(--amber);padding:4px 11px;border-radius:20px;font-size:12px;font-weight:600}
+.screen{display:none;padding:36px;max-width:980px;margin:0 auto}
+.screen.active{display:block}
+
+/* ===== HERO ===== */
+.hero{text-align:center;padding:56px 20px 36px}
+.hero-tag{display:inline-block;padding:6px 18px;background:rgba(255,184,77,.1);border:1px solid rgba(255,184,77,.28);color:var(--amber);border-radius:30px;font-size:13px;font-weight:500;margin-bottom:22px}
+.hero h1{font-size:clamp(38px,7vw,68px);font-weight:800;line-height:1.08;margin-bottom:18px}
+.hero h1 .k{color:var(--amber)}
+.hero h1 .b{background:linear-gradient(135deg,var(--accent2),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 .h{color:var(--red)}
+.hero p{font-size:17px;color:var(--text2);max-width:520px;margin:0 auto 32px;line-height:1.65}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-xl{padding:15px 34px;font-size:16px;border-radius:14px}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:36px 0}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;text-align:center;transition:border-color .2s,transform .2s}
+.stat-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.stat-val{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;margin-bottom:5px}
+.stat-lbl{font-size:13px;color:var(--text2)}
+.sections-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:18px 0}
+.section-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.section-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none}
+.section-card.easy::before{background:radial-gradient(circle at top left,rgba(61,220,174,.09),transparent 55%)}
+.section-card.mod::before{background:radial-gradient(circle at top left,rgba(255,184,77,.09),transparent 55%)}
+.section-card.hard::before{background:radial-gradient(circle at top left,rgba(255,94,125,.09),transparent 55%)}
+.section-card:hover::before{opacity:1}
+.section-card:hover{transform:translateY(-4px);border-color:var(--border2)}
+.sec-badge{display:inline-block;padding:4px 13px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:14px}
+.easy .sec-badge{background:rgba(61,220,174,.1);color:var(--easy);border:1px solid rgba(61,220,174,.22)}
+.mod .sec-badge{background:rgba(255,184,77,.1);color:var(--mod);border:1px solid rgba(255,184,77,.22)}
+.hard .sec-badge{background:rgba(255,94,125,.1);color:var(--hard);border:1px solid rgba(255,94,125,.22)}
+.sec-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:7px}
+.sec-desc{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:14px}
+.sec-pts{font-size:13px;font-weight:600}
+.easy .sec-pts{color:var(--easy)}.mod .sec-pts{color:var(--mod)}.hard .sec-pts{color:var(--hard)}
+
+/* ===== TAB WARNING OVERLAY ===== */
+.tab-warning{position:fixed;inset:0;z-index:9999;background:rgba(7,7,15,0.97);display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px;text-align:center;padding:40px}
+.tab-warning.active{display:flex}
+.tw-icon{font-size:72px;animation:shake .4s ease-in-out 2}
+@keyframes shake{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+.tw-title{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--red)}
+.tw-sub{font-size:16px;color:var(--text2);max-width:400px;line-height:1.6}
+.tw-count{font-family:'Syne',sans-serif;font-size:18px;color:var(--amber);margin-top:4px}
+
+/* ===== QUIZ ===== */
+.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:12px;flex-wrap:wrap}
+.quiz-section-badge{padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600}
+.quiz-progress{flex:1;max-width:280px}
+.progress-bar{height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;transition:width .4s ease}
+.easy .progress-fill{background:var(--easy)}.mod .progress-fill{background:var(--mod)}.hard .progress-fill{background:var(--hard)}
+.progress-text{font-size:12px;color:var(--text2);margin-top:5px;text-align:right}
+.q-timer{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;min-width:46px;text-align:center;padding:6px 12px;border-radius:10px;background:var(--card);border:1px solid var(--border)}
+.q-timer.warn{color:var(--red);border-color:rgba(255,94,125,.4);animation:pulse .5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.question-card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:34px;margin-bottom:22px}
+.q-number{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.q-text{font-family:'Syne',sans-serif;font-size:21px;font-weight:600;line-height:1.4;margin-bottom:30px}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.option-btn{background:var(--bg3);border:1.5px solid var(--border);border-radius:13px;padding:14px 18px;text-align:left;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:11px}
+.option-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(124,108,255,.07)}
+.option-btn.selected{border-color:var(--accent);background:rgba(124,108,255,.1)}
+.option-btn.correct{border-color:var(--easy);background:rgba(61,220,174,.1);color:var(--easy)}
+.option-btn.wrong{border-color:var(--red);background:rgba(255,94,125,.08);color:var(--red)}
+.option-btn:disabled{cursor:default}
+.opt-letter{width:28px;height:28px;border-radius:7px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'Syne',sans-serif;flex-shrink:0}
+.correct .opt-letter{background:rgba(61,220,174,.18)}.wrong .opt-letter{background:rgba(255,94,125,.18)}
+.quiz-feedback{text-align:center;padding:14px;margin-top:10px;border-radius:12px;font-size:15px;font-weight:500;opacity:0;transition:opacity .3s}
+.quiz-feedback.show{opacity:1}
+.quiz-feedback.correct{background:rgba(61,220,174,.08);color:var(--easy)}
+.quiz-feedback.wrong{background:rgba(255,94,125,.08);color:var(--red)}
+.next-btn-wrap{text-align:center;margin-top:18px}
+.loading-box{text-align:center;padding:80px 40px}
+.spinner{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 18px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-box p{color:var(--text2);font-size:15px}
+
+/* ===== RESULTS ===== */
+.result-hero{text-align:center;padding:36px 20px}
+.result-emoji{font-size:60px;margin-bottom:14px}
+.result-title{font-size:34px;font-weight:800;margin-bottom:9px}
+.result-pts{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;background:linear-gradient(135deg,var(--amber),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.result-sub{color:var(--text2);font-size:16px;margin-top:7px}
+.result-breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:28px 0}
+.rb-card{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:18px;text-align:center}
+.rb-score{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;margin-bottom:4px}
+.rb-label{font-size:12px;color:var(--text2)}
+
+/* ===== AVATAR SYSTEM ===== */
+.avatar-stage{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:transform .2s}
+.avatar-stage:hover{transform:scale(1.05)}
+.av-canvas{position:relative;width:80px;height:80px}
+.av-level-badge{position:absolute;bottom:-4px;right:-4px;background:linear-gradient(135deg,var(--amber),var(--gold));color:#1a1000;font-family:'Syne',sans-serif;font-size:10px;font-weight:800;padding:2px 7px;border-radius:10px;border:2px solid var(--bg)}
+.av-name{font-size:11px;color:var(--text3);text-align:center;max-width:80px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Avatar Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(10px);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:30px 20px;overflow-y:auto}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border:1px solid var(--border2);border-radius:24px;padding:36px;width:100%;max-width:460px;position:relative;margin:auto}
+.modal-close{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center}
+.modal h2{font-size:22px;font-weight:700;margin-bottom:5px}
+.modal p.msub{color:var(--text2);font-size:14px;margin-bottom:24px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--text2)}
+.form-group input,.form-group select{width:100%;padding:11px 15px;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color .2s;outline:none}
+.form-group input:focus,.form-group select:focus{border-color:var(--accent)}
+.form-group select option{background:var(--bg2)}
+.form-row{display:flex;gap:11px}
+.auth-switch{text-align:center;margin-top:16px;font-size:13px;color:var(--text2)}
+.auth-switch a{color:var(--accent2);cursor:pointer}
+
+/* Avatar Builder */
+.ava-preview-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:24px}
+.ava-big{width:120px;height:120px;position:relative}
+.ava-big svg{width:100%;height:100%}
+.evo-tag{margin-top:8px;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;background:rgba(124,108,255,.12);color:var(--accent2);border:1px solid rgba(124,108,255,.25)}
+.trait-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.trait-btn{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text2);font-size:13px;cursor:pointer;transition:all .2s;text-align:center}
+.trait-btn.active{border-color:var(--accent);background:rgba(124,108,255,.1);color:var(--accent2)}
+.trait-label{font-size:11px;color:var(--text3);margin-bottom:4px;text-align:center}
+
+/* Evolution path display */
+.evo-path{display:flex;align-items:center;gap:8px;overflow-x:auto;padding:16px 0;margin-bottom:20px}
+.evo-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0}
+.evo-step-icon{width:44px;height:44px;border-radius:12px;background:var(--bg3);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;transition:all .2s}
+.evo-step-icon.reached{border-color:var(--amber);background:rgba(255,184,77,.1)}
+.evo-step-icon.current{border-color:var(--green);background:rgba(61,220,174,.12);box-shadow:0 0 12px rgba(61,220,174,.2)}
+.evo-step-name{font-size:10px;color:var(--text3);text-align:center;max-width:50px}
+.evo-arrow{color:var(--text3);font-size:16px;flex-shrink:0}
+
+/* DASHBOARD */
+.dash-header{margin-bottom:28px}
+.streak-banner{background:rgba(255,184,77,.07);border:1px solid rgba(255,184,77,.2);border-radius:18px;padding:22px 26px;display:flex;align-items:center;gap:18px;margin-bottom:22px;flex-wrap:wrap}
+.streak-fire{font-size:40px}
+.streak-info h3{font-size:17px;font-weight:700;margin-bottom:4px}
+.streak-info p{font-size:14px;color:var(--text2)}
+.lottery-card{background:rgba(124,108,255,.08);border:1px solid rgba(124,108,255,.22);border-radius:18px;padding:26px;margin-bottom:22px;position:relative;overflow:hidden}
+.lottery-card::after{content:'🎰';position:absolute;right:22px;top:50%;transform:translateY(-50%);font-size:56px;opacity:.12;pointer-events:none}
+.lottery-title{font-size:19px;font-weight:700;margin-bottom:7px}
+.lottery-desc{font-size:14px;color:var(--text2);line-height:1.6;max-width:440px}
+.lot-bar{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:8px}
+.lot-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:4px;transition:width .5s ease}
+.lot-label{font-size:12px;color:var(--text2);margin-top:5px}
+.history-table{width:100%;background:var(--card);border:1px solid var(--border);border-radius:15px;overflow:hidden;border-collapse:collapse}
+.history-table th{padding:13px 18px;text-align:left;font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border);font-weight:500}
+.history-table td{padding:13px 18px;font-size:14px;border-bottom:1px solid var(--border)}
+.history-table tr:last-child td{border-bottom:none}
+.history-table tr:hover td{background:var(--bg3)}
+.badge{display:inline-block;padding:3px 9px;border-radius:7px;font-size:11px;font-weight:600}
+.b-easy{background:rgba(61,220,174,.1);color:var(--easy)}.b-mod{background:rgba(255,184,77,.1);color:var(--mod)}.b-hard{background:rgba(255,94,125,.1);color:var(--hard)}
+.lb-row{display:flex;align-items:center;gap:14px;padding:13px 18px;background:var(--card);border:1px solid var(--border);border-radius:13px;margin-bottom:7px;transition:transform .15s}
+.lb-row:hover{transform:translateX(4px)}
+.lb-rank{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;min-width:34px}
+.lb-row:nth-child(1) .lb-rank{color:var(--gold)}.lb-row:nth-child(2) .lb-rank{color:#c0c0c0}.lb-row:nth-child(3) .lb-rank{color:#cd7f32}
+.lb-name{flex:1;font-weight:500}
+.lb-pts{font-family:'Syne',sans-serif;font-weight:700;color:var(--amber)}
+.lb-streak{font-size:12px;color:var(--text3)}
+.toast{position:fixed;bottom:28px;right:28px;padding:13px 20px;background:var(--card);border:1px solid var(--border2);border-radius:11px;font-size:14px;z-index:1000;transform:translateY(70px);opacity:0;transition:all .3s;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-color:rgba(61,220,174,.38);color:var(--easy)}.toast.error{border-color:rgba(255,94,125,.38);color:var(--red)}
+.page-title{font-size:30px;font-weight:800;margin-bottom:5px}
+.page-sub{font-size:15px;color:var(--text2);margin-bottom:28px}
+@media(max-width:680px){nav{padding:13px 18px}.screen{padding:18px}.sections-grid,.stats-row,.result-breakdown,.trait-grid{grid-template-columns:1fr}.options-grid{grid-template-columns:1fr}.hero h1{font-size:34px}}
+</style>
+</head>
+<body>
+<div class="bg-orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+
+<!-- TAB SWITCH WARNING -->
+<div class="tab-warning" id="tab-warning">
+  <div class="tw-icon">🚨</div>
+  <div class="tw-title">Tab Switch Detected!</div>
+  <div class="tw-sub">You switched tabs during the quiz. That's not fair play, Hero! Your attempt has been flagged.</div>
+  <div class="tw-count" id="tw-count">Violations: 1</div>
+  <button class="btn btn-primary btn-xl" onclick="dismissTabWarning()" style="margin-top:10px">Resume Quiz →</button>
+  <button class="btn btn-danger" onclick="forfeitQuiz()" style="margin-top:6px">Forfeit This Round</button>
+</div>
+
+<div class="wrap">
+<nav>
+  <div class="logo" onclick="showScreen('home')">
+    <div>
+      <span class="logo-text">Kon Banega Hero</span>
+      <span class="logo-sub">Quiz Championship</span>
+    </div>
+  </div>
+  <div class="nav-right" id="nav-right">
+    <button class="btn btn-ghost btn-sm" onclick="openModal('login')">Log in</button>
+    <button class="btn btn-primary btn-sm" onclick="openModal('signup')">Sign up free</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <div class="hero">
+    <div class="hero-tag">🏆 Grand Lottery — Win Prizes Twice a Year!</div>
+    <h1><span class="k">Kon</span> <span class="b">Banega</span><br><span class="h">Hero?</span></h1>
+    <p>15 AI-powered questions across 3 levels. Earn points, evolve your Hero avatar, and compete for glory!</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary btn-xl" onclick="startQuiz()">Start Quest ⚡</button>
+      <button class="btn btn-ghost btn-xl" onclick="showScreen('leaderboard')">Leaderboard 🏆</button>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-val" style="background:linear-gradient(135deg,var(--accent2),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">12,847</div><div class="stat-lbl">Active Heroes</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--amber)">3,421</div><div class="stat-lbl">Questions Answered Today</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--green)">180</div><div class="stat-lbl">Days to Next Lottery</div></div>
+  </div>
+  <div style="margin:8px 0 18px"><h2 style="font-size:20px;font-weight:700;margin-bottom:5px">Choose Your Challenge</h2><p style="color:var(--text2);font-size:13px">5 questions per tier — complete all 3 for maximum points</p></div>
+  <div class="sections-grid">
+    <div class="section-card easy" onclick="startQuizSection('easy')"><div class="sec-badge">Easy</div><div class="sec-title">Foundation</div><div class="sec-desc">Class 1–5 concepts. Warm up your mind!</div><div class="sec-pts">+1 point per correct</div></div>
+    <div class="section-card mod" onclick="startQuizSection('moderate')"><div class="sec-badge">Moderate</div><div class="sec-title">Challenger</div><div class="sec-desc">Class 6–8 topics. Prove your skills!</div><div class="sec-pts">+2 points per correct</div></div>
+    <div class="section-card hard" onclick="startQuizSection('hard')"><div class="sec-badge">Hard</div><div class="sec-title">Expert</div><div class="sec-desc">Class 9–10 curriculum. Elite only!</div><div class="sec-pts">+3 points per correct</div></div>
+  </div>
+  <div style="background:linear-gradient(135deg,rgba(124,108,255,.08),rgba(61,220,174,.04));border:1px solid rgba(124,108,255,.18);border-radius:22px;padding:32px;margin-top:28px;display:flex;gap:28px;align-items:center;flex-wrap:wrap">
+    <div style="font-size:52px">🎰</div>
+    <div><h2 style="font-size:22px;font-weight:700;margin-bottom:9px">The Grand Hero Lottery</h2><p style="color:var(--text2);font-size:15px;line-height:1.7;max-width:520px">Login and play for <strong style="color:var(--accent2)">6 consecutive months</strong> to qualify for our bi-annual prize draw. The more active you are, the higher your lottery score!</p>
+    <div style="display:flex;gap:18px;margin-top:16px;flex-wrap:wrap">
+      <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--amber)">Jan & Jul</div><div style="font-size:12px;color:var(--text3)">Draw Dates</div></div>
+      <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--green)">180+</div><div style="font-size:12px;color:var(--text3)">Days Needed</div></div>
+      <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--accent2)">2×/Year</div><div style="font-size:12px;color:var(--text3)">Prize Events</div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="screen" id="screen-quiz">
+  <div id="quiz-loading" class="loading-box"><div class="spinner"></div><p id="loading-msg">Generating questions with AI...</p></div>
+  <div id="quiz-content" style="display:none">
+    <div class="quiz-header">
+      <div id="qsec-badge" class="quiz-section-badge easy sec-badge">Easy</div>
+      <div class="quiz-progress">
+        <div class="progress-bar"><div class="progress-fill" id="q-progress" style="width:20%"></div></div>
+        <div class="progress-text" id="q-prog-text">Question 1 of 5</div>
+      </div>
+      <div class="q-timer" id="q-timer">30</div>
+    </div>
+    <div class="question-card">
+      <div class="q-number" id="q-number">Question 1</div>
+      <div class="q-text" id="q-text">Loading...</div>
+      <div class="options-grid" id="options-grid"></div>
+    </div>
+    <div class="quiz-feedback" id="quiz-feedback"></div>
+    <div class="next-btn-wrap" id="next-btn-wrap" style="display:none"><button class="btn btn-primary btn-xl" onclick="nextQuestion()">Next Question →</button></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="screen-result">
+  <div class="result-hero">
+    <div class="result-emoji" id="res-emoji">🎉</div>
+    <div class="result-title" id="res-title">Section Complete!</div>
+    <div class="result-pts" id="res-pts">+8 pts</div>
+    <div class="result-sub" id="res-sub">You got 4/5 correct!</div>
+  </div>
+  <div class="result-breakdown">
+    <div class="rb-card"><div class="rb-score" id="rb-correct" style="color:var(--green)">4</div><div class="rb-label">Correct</div></div>
+    <div class="rb-card"><div class="rb-score" id="rb-wrong" style="color:var(--red)">1</div><div class="rb-label">Wrong</div></div>
+    <div class="rb-card"><div class="rb-score" id="rb-earned" style="color:var(--amber)">8</div><div class="rb-label">Points Earned</div></div>
+  </div>
+  <div style="text-align:center;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px">
+    <button class="btn btn-primary btn-xl" onclick="startQuiz()">Play Again ⚡</button>
+    <button class="btn btn-ghost btn-xl" onclick="showScreen('home')">Back to Home</button>
+    <button class="btn btn-ghost btn-xl" id="dash-btn" style="display:none" onclick="showScreen('dashboard')">Dashboard 📊</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="screen" id="screen-dashboard">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;flex-wrap:wrap;gap:12px">
+    <div><div class="page-title" id="dash-welcome">My Dashboard</div><div class="page-sub" style="margin-bottom:0">Track your progress and Hero evolution</div></div>
+    <div id="dash-avatar-wrap"></div>
+  </div>
+  <div class="streak-banner">
+    <div class="streak-fire">🔥</div>
+    <div class="streak-info"><h3 id="streak-title">7-Day Streak!</h3><p id="streak-desc">Keep it up, Hero!</p></div>
+    <div style="margin-left:auto;text-align:right"><div style="font-family:'Syne',sans-serif;font-size:34px;font-weight:800;color:var(--amber)" id="streak-count">7</div><div style="font-size:12px;color:var(--text2)">day streak</div></div>
+  </div>
+  <!-- Avatar Evolution Card -->
+  <div id="avatar-evo-card" style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:22px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div><h3 style="font-size:17px;font-weight:700;margin-bottom:4px">🦸 Hero Avatar Evolution</h3><p style="font-size:13px;color:var(--text2)">Your avatar evolves as you earn more points</p></div>
+      <button class="btn btn-ghost btn-sm" onclick="openAvatarBuilder()">Customize Avatar</button>
+    </div>
+    <div class="evo-path" id="evo-path-display"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+      <div><span style="font-size:13px;color:var(--text2)">Current Tier: </span><span style="font-size:13px;font-weight:600;color:var(--accent2)" id="evo-tier-name">Novice</span></div>
+      <div style="font-size:12px;color:var(--text3)" id="evo-next-info">50 pts to next evolution</div>
+    </div>
+    <div class="lot-bar" style="margin-top:6px"><div class="lot-fill" id="evo-bar" style="width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2))"></div></div>
+  </div>
+  <div class="stats-row" style="margin-bottom:22px">
+    <div class="stat-card"><div class="stat-val" id="total-pts-dash" style="color:var(--amber)">0</div><div class="stat-lbl">Total Points</div></div>
+    <div class="stat-card"><div class="stat-val" id="total-quizzes" style="color:var(--accent2)">0</div><div class="stat-lbl">Quizzes Done</div></div>
+    <div class="stat-card"><div class="stat-val" id="total-days" style="color:var(--green)">0</div><div class="stat-lbl">Active Days</div></div>
+  </div>
+  <div class="lottery-card">
+    <div class="lottery-title">🎰 Lottery Qualification</div>
+    <div class="lottery-desc" id="lottery-desc">Play daily to qualify for the bi-annual lottery draw!</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px"><span style="font-size:13px;font-weight:600;color:var(--accent2)">Progress</span><span style="font-size:13px;color:var(--text2)" id="lot-pct">0%</span></div>
+    <div class="lot-bar"><div class="lot-fill" id="lot-bar-fill" style="width:0%"></div></div>
+    <div class="lot-label" id="lot-label">Need 180 active days to qualify</div>
+  </div>
+  <h3 style="font-size:17px;font-weight:700;margin-bottom:13px">Recent History</h3>
+  <table class="history-table"><thead><tr><th>Date</th><th>Section</th><th>Score</th><th>Points</th></tr></thead><tbody id="history-body"><tr><td colspan="4" style="text-align:center;color:var(--text3);padding:28px">Play your first quiz!</td></tr></tbody></table>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="screen" id="screen-leaderboard">
+  <div class="page-title">🏆 Hero Leaderboard</div>
+  <div class="page-sub">Top champions this month</div>
+  <div id="lb-list"></div>
+</div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('auth-modal')">✕</button>
+    <h2 id="modal-title">Welcome back!</h2>
+    <p class="msub" id="modal-sub">Sign in to save your points</p>
+    <div id="signup-fields" style="display:none">
+      <div class="form-row">
+        <div class="form-group" style="flex:1"><label>First Name</label><input type="text" id="fname" placeholder="Arjun"></div>
+        <div class="form-group" style="flex:1"><label>Last Name</label><input type="text" id="lname" placeholder="Sharma"></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="you@example.com"></div>
+    <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="••••••••"></div>
+    <button class="btn btn-primary" style="width:100%;padding:13px" id="auth-submit-btn" onclick="submitAuth()">Sign In</button>
+    <div class="auth-switch" id="auth-switch">Don't have an account? <a onclick="toggleAuth()">Sign up free</a></div>
+  </div>
+</div>
+
+<!-- AVATAR BUILDER MODAL -->
+<div class="modal-overlay" id="avatar-modal">
+  <div class="modal" style="max-width:500px">
+    <button class="modal-close" onclick="closeModal('avatar-modal')">✕</button>
+    <h2>Build Your Hero Avatar</h2>
+    <p class="msub">Customize your look. Your avatar evolves automatically as you earn points!</p>
+    <div class="ava-preview-wrap">
+      <div class="ava-big" id="ava-preview-big"></div>
+      <div class="evo-tag" id="ava-evo-tag">Novice Hero</div>
+    </div>
+    <div class="form-group"><label>Hero Name</label><input type="text" id="hero-name" placeholder="Enter your hero name..." maxlength="20"></div>
+    <div style="margin-bottom:12px"><div class="trait-label" style="font-size:12px;color:var(--text3);margin-bottom:8px;text-align:left">Skin Tone</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div class="skin-btn" data-skin="0" onclick="setSkin(0)" style="width:32px;height:32px;border-radius:50%;background:#FFDBB4;cursor:pointer;border:2px solid transparent;transition:all .2s"></div>
+        <div class="skin-btn" data-skin="1" onclick="setSkin(1)" style="width:32px;height:32px;border-radius:50%;background:#D4956A;cursor:pointer;border:2px solid transparent;transition:all .2s"></div>
+        <div class="skin-btn" data-skin="2" onclick="setSkin(2)" style="width:32px;height:32px;border-radius:50%;background:#8B5E3C;cursor:pointer;border:2px solid transparent;transition:all .2s"></div>
+        <div class="skin-btn" data-skin="3" onclick="setSkin(3)" style="width:32px;height:32px;border-radius:50%;background:#4A2C17;cursor:pointer;border:2px solid transparent;transition:all .2s"></div>
+      </div>
+    </div>
+    <div style="margin-bottom:12px"><div class="trait-label" style="font-size:12px;color:var(--text3);margin-bottom:8px;text-align:left">Hair Style</div>
+      <div class="trait-grid">
+        <button class="trait-btn active" data-hair="0" onclick="setHair(0)">⬜ Short</button>
+        <button class="trait-btn" data-hair="1" onclick="setHair(1)">🟫 Long</button>
+        <button class="trait-btn" data-hair="2" onclick="setHair(2)">⬛ Curly</button>
+        <button class="trait-btn" data-hair="3" onclick="setHair(3)">🟨 Spiky</button>
+      </div>
+    </div>
+    <div style="margin-bottom:20px"><div class="trait-label" style="font-size:12px;color:var(--text3);margin-bottom:8px;text-align:left">Hero Aura Color</div>
+      <div class="trait-grid">
+        <button class="trait-btn active" data-aura="purple" onclick="setAura('purple')">💜 Mystic Purple</button>
+        <button class="trait-btn" data-aura="blue" onclick="setAura('blue')">💙 Ocean Blue</button>
+        <button class="trait-btn" data-aura="green" onclick="setAura('green')">💚 Forest Green</button>
+        <button class="trait-btn" data-aura="red" onclick="setAura('red')">❤️ Flame Red</button>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:13px" onclick="saveAvatar()">Save My Hero →</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const POINTS={easy:1,moderate:2,hard:3};
+const LABELS={easy:'Easy',moderate:'Moderate',hard:'Hard'};
+const SKINS=['#FFDBB4','#D4956A','#8B5E3C','#4A2C17'];
+const HAIR_COLORS=['#2c1810','#1a0a00','#0a0a0a','#c8a000'];
+const AURAS={purple:'#7c6cff',blue:'#378ADD',green:'#3ddcae',red:'#ff5e7d'};
+
+const EVO_TIERS=[
+  {name:'Novice',emoji:'🐣',minPts:0,nextPts:50},
+  {name:'Learner',emoji:'📚',minPts:50,nextPts:150},
+  {name:'Seeker',emoji:'🔍',minPts:150,nextPts:300},
+  {name:'Warrior',emoji:'⚔️',minPts:300,nextPts:500},
+  {name:'Champion',emoji:'🛡️',minPts:500,nextPts:750},
+  {name:'Master',emoji:'🧠',minPts:750,nextPts:1000},
+  {name:'Grandmaster',emoji:'👑',minPts:1000,nextPts:1500},
+  {name:'Legend',emoji:'🌟',minPts:1500,nextPts:2000},
+  {name:'Mythic',emoji:'🔱',minPts:2000,nextPts:3000},
+  {name:'HERO',emoji:'🦸',minPts:3000,nextPts:Infinity}
+];
+
+let currentUser=null,authMode='login',tabViolations=0,quizActive=false;
+let users=JSON.parse(localStorage.getItem('kbh_users')||'{}');
+let currentQuiz={section:'easy',questions:[],current:0,correct:0,pts:0,answered:false};
+let timerInterval=null,timeLeft=30;
+let avatarState={skin:0,hair:0,aura:'purple',heroName:''};
+
+function getEvoTier(pts){
+  for(let i=EVO_TIERS.length-1;i>=0;i--){ if(pts>=EVO_TIERS[i].minPts) return i; }
+  return 0;
+}
+
+function drawHeroSVG(opts){
+  const {skin=0,hair=0,aura='purple',tier=0,size=80}=opts;
+  const sc=SKINS[skin];
+  const hc=HAIR_COLORS[hair];
+  const ac=AURAS[aura]||'#7c6cff';
+  const evo=EVO_TIERS[tier];
+  const s=size/80;
+  const hairPaths=[
+    `<rect x="${22*s}" y="${10*s}" width="${36*s}" height="${16*s}" rx="${6*s}" fill="${hc}"/>`,
+    `<path d="M${20*s} ${12*s} Q${40*s} ${2*s} ${60*s} ${12*s} L${62*s} ${38*s} Q${58*s} ${50*s} ${56*s} ${56*s} L${24*s} ${56*s} Q${22*s} ${50*s} ${18*s} ${38*s} Z" fill="${hc}" opacity=".9"/>`,
+    `<ellipse cx="${40*s}" cy="${14*s}" rx="${19*s}" ry="${10*s}" fill="${hc}"/><circle cx="${28*s}" cy="${18*s}" r="${7*s}" fill="${hc}"/><circle cx="${52*s}" cy="${18*s}" r="${7*s}" fill="${hc}"/>`,
+    `<polygon points="${40*s},${4*s} ${26*s},${14*s} ${30*s},${14*s} ${22*s},${26*s} ${28*s},${22*s} ${24*s},${32*s} ${56*s},${32*s} ${52*s},${22*s} ${58*s},${26*s} ${50*s},${14*s} ${54*s},${14*s}" fill="${hc}"/>`
+  ];
+  const tierAccessory=tier>=3?`<path d="M${26*s} ${22*s} Q${40*s} ${15*s} ${54*s} ${22*s}" stroke="${ac}" stroke-width="${2*s}" fill="none" opacity=".7"/>`:''
+  const crown=tier>=6?`<text x="${40*s}" y="${8*s}" text-anchor="middle" font-size="${12*s}px">👑</text>`:''
+  const auraRing=tier>=2?`<circle cx="${40*s}" cy="${40*s}" r="${38*s}" fill="none" stroke="${ac}" stroke-width="${1.5*s}" opacity=".25"/><circle cx="${40*s}" cy="${40*s}" r="${34*s}" fill="none" stroke="${ac}" stroke-width="${.8*s}" opacity=".15"/>`:''
+  return `<svg viewBox="0 0 ${80*s} ${80*s}" xmlns="http://www.w3.org/2000/svg">
+    ${auraRing}
+    ${hairPaths[hair]}
+    <ellipse cx="${40*s}" cy="${32*s}" rx="${18*s}" ry="${20*s}" fill="${sc}"/>
+    <ellipse cx="${33*s}" cy="${30*s}" rx="${3*s}" ry="${3.5*s}" fill="#1a1028"/>
+    <ellipse cx="${47*s}" cy="${30*s}" rx="${3*s}" ry="${3.5*s}" fill="#1a1028"/>
+    <path d="M${34*s} ${38*s} Q${40*s} ${43*s} ${46*s} ${38*s}" stroke="#1a1028" stroke-width="${1.5*s}" fill="none" stroke-linecap="round"/>
+    <rect x="${30*s}" y="${50*s}" width="${20*s}" height="${22*s}" rx="${5*s}" fill="${ac}" opacity=".85"/>
+    <rect x="${18*s}" y="${51*s}" width="${12*s}" height="${16*s}" rx="${4*s}" fill="${ac}" opacity=".7"/>
+    <rect x="${50*s}" y="${51*s}" width="${12*s}" height="${16*s}" rx="${4*s}" fill="${ac}" opacity=".7"/>
+    ${tierAccessory}${crown}
+  </svg>`;
+}
+
+function getNavAvatarHTML(){
+  if(!currentUser) return '';
+  const tier=getEvoTier(currentUser.pts||0);
+  const av=currentUser.avatar||{};
+  const svg=drawHeroSVG({skin:av.skin||0,hair:av.hair||0,aura:av.aura||'purple',tier,size:32});
+  return `<div class="avatar-stage" onclick="openAvatarBuilder()" title="My Hero"><div class="av-canvas" style="width:32px;height:32px">${svg}</div></div>`;
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  if(id==='dashboard') updateDashboard();
+  if(id==='leaderboard') renderLeaderboard();
+  if(id!=='quiz'){quizActive=false;}
+}
+
+function openModal(id){
+  if(id==='login'||id==='signup'){authMode=id;document.getElementById('auth-modal').classList.add('show');updateModalUI();}
+}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+function toggleAuth(){authMode=authMode==='login'?'signup':'login';updateModalUI();}
+function updateModalUI(){
+  const s=authMode==='signup';
+  document.getElementById('modal-title').textContent=s?'Create your account':'Welcome back!';
+  document.getElementById('modal-sub').textContent=s?'Join thousands of Heroes today':'Sign in to save your points';
+  document.getElementById('signup-fields').style.display=s?'block':'none';
+  document.getElementById('auth-submit-btn').textContent=s?'Create Account →':'Sign In →';
+  document.getElementById('auth-switch').innerHTML=s?'Already have an account? <a onclick="toggleAuth()">Sign in</a>':"Don't have an account? <a onclick=\"toggleAuth()\">Sign up free</a>";
+}
+
+function submitAuth(){
+  const email=document.getElementById('email').value.trim();
+  const pass=document.getElementById('password').value;
+  if(!email||!pass){showToast('Please fill in all fields','error');return;}
+  if(authMode==='signup'){
+    const fname=document.getElementById('fname').value.trim()||'Hero';
+    const lname=document.getElementById('lname').value.trim()||'';
+    if(users[email]){showToast('Account exists! Try logging in.','error');return;}
+    users[email]={name:fname+(lname?' '+lname:''),email,pass,pts:0,history:[],loginDays:[],streak:0,lastLogin:null,joined:new Date().toISOString(),avatar:{skin:0,hair:0,aura:'purple',heroName:fname}};
+    saveUsers();loginUser(email);showToast('Welcome to Kon Banega Hero! 🎉','success');
+  }else{
+    if(!users[email]||users[email].pass!==pass){showToast('Invalid email or password','error');return;}
+    loginUser(email);showToast('Welcome back, Hero! 🔥','success');
+  }
+  closeModal('auth-modal');
+}
+
+function loginUser(email){
+  currentUser=users[email];
+  const today=new Date().toDateString();
+  if(!currentUser.loginDays) currentUser.loginDays=[];
+  if(!currentUser.loginDays.includes(today)){currentUser.loginDays.push(today);updateStreak();}
+  currentUser.lastLogin=today;
+  if(!currentUser.avatar) currentUser.avatar={skin:0,hair:0,aura:'purple',heroName:currentUser.name.split(' ')[0]};
+  saveUsers();updateNav();
+}
+
+function updateStreak(){
+  if(!currentUser.loginDays||currentUser.loginDays.length<2){currentUser.streak=1;return;}
+  const days=currentUser.loginDays.map(d=>new Date(d)).sort((a,b)=>b-a);
+  let streak=1;
+  for(let i=1;i<days.length;i++){const diff=(days[i-1]-days[i])/86400000;if(diff<=1.5)streak++;else break;}
+  currentUser.streak=streak;
+}
+
+function saveUsers(){if(currentUser)users[currentUser.email]=currentUser;localStorage.setItem('kbh_users',JSON.stringify(users));}
+
+function logout(){currentUser=null;quizActive=false;updateNav();showScreen('home');showToast('See you tomorrow, Hero! 👋','success');}
+
+function updateNav(){
+  const nr=document.getElementById('nav-right');
+  if(currentUser){
+    const tier=getEvoTier(currentUser.pts||0);
+    const av=currentUser.avatar||{};
+    const svg=drawHeroSVG({skin:av.skin||0,hair:av.hair||0,aura:av.aura||'purple',tier,size:30});
+    nr.innerHTML=`<div class="avatar-stage" onclick="openAvatarBuilder()" title="Customize Hero" style="margin-right:4px"><div style="width:30px;height:30px">${svg}</div></div><div class="user-badge"><span>${currentUser.name.split(' ')[0]}</span></div><div class="points-pill">⭐ ${currentUser.pts}</div><button class="btn btn-ghost btn-sm" onclick="showScreen('dashboard')">Dashboard</button><button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>`;
+    document.getElementById('dash-btn').style.display='inline-block';
+  }else{
+    nr.innerHTML=`<button class="btn btn-ghost btn-sm" onclick="openModal('login')">Log in</button><button class="btn btn-primary btn-sm" onclick="openModal('signup')">Sign up free</button>`;
+    document.getElementById('dash-btn').style.display='none';
+  }
+}
+
+// ===== TAB SWITCH DETECTION =====
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden&&quizActive){
+    tabViolations++;
+    clearInterval(timerInterval);
+    document.getElementById('tw-count').textContent=`Violations this session: ${tabViolations}`;
+    document.getElementById('tab-warning').classList.add('active');
+  }
+});
+window.addEventListener('blur',()=>{
+  if(quizActive){
+    tabViolations++;
+    clearInterval(timerInterval);
+    document.getElementById('tw-count').textContent=`Violations this session: ${tabViolations}`;
+    document.getElementById('tab-warning').classList.add('active');
+  }
+});
+
+function dismissTabWarning(){
+  document.getElementById('tab-warning').classList.remove('active');
+  if(quizActive&&!currentQuiz.answered) startTimer();
+}
+function forfeitQuiz(){
+  document.getElementById('tab-warning').classList.remove('active');
+  quizActive=false;tabViolations=0;clearInterval(timerInterval);showScreen('home');showToast('Quiz forfeited. Better luck next time!','error');
+}
+
+// ===== QUIZ ENGINE =====
+async function startQuiz(){startQuizSection('easy');}
+
+async function startQuizSection(section){
+  tabViolations=0;
+  currentQuiz={section,questions:[],current:0,correct:0,pts:0,answered:false};
+  showScreen('quiz');quizActive=true;
+  document.getElementById('quiz-loading').style.display='block';
+  document.getElementById('quiz-content').style.display='none';
+  const msgs=['Generating questions with AI...','Crafting brain-bending challenges...','Almost ready...'];
+  let mi=0;const mi2=setInterval(()=>{mi=(mi+1)%msgs.length;document.getElementById('loading-msg').textContent=msgs[mi];},1200);
+  try{
+    const qs=await fetchQuestions(section);
+    clearInterval(mi2);currentQuiz.questions=qs;
+    document.getElementById('quiz-loading').style.display='none';document.getElementById('quiz-content').style.display='block';renderQuestion();
+  }catch(e){
+    clearInterval(mi2);currentQuiz.questions=getFallback(section);
+    document.getElementById('quiz-loading').style.display='none';document.getElementById('quiz-content').style.display='block';renderQuestion();
+  }
+}
+
+async function fetchQuestions(section){
+  const gr=section==='easy'?'Classes 1-5 (ages 6-10)':section==='moderate'?'Classes 6-8 (ages 11-14)':'Classes 9-10 (ages 14-16)';
+  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:`Generate exactly 5 multiple-choice quiz questions for Indian school students at ${gr} level. Mix subjects: Math, Science, English, Social Studies, General Knowledge.\n\nReturn ONLY a valid JSON array:\n[{"q":"question","opts":["A","B","C","D"],"ans":0}]\n\nans is the index (0-3) of the correct answer. Age-appropriate questions only.`}]})});
+  const data=await res.json();
+  const text=data.content.map(c=>c.text||'').join('');
+  const clean=text.replace(/```json|```/g,'').trim();
+  const s=clean.indexOf('['),e=clean.lastIndexOf(']');
+  return JSON.parse(clean.slice(s,e+1));
+}
+
+function getFallback(section){
+  const b={easy:[{q:"What is the capital of India?",opts:["Mumbai","New Delhi","Kolkata","Chennai"],ans:1},{q:"How many days are there in a week?",opts:["5","6","7","8"],ans:2},{q:"Which planet is the Red Planet?",opts:["Venus","Saturn","Jupiter","Mars"],ans:3},{q:"What is 12 × 12?",opts:["124","144","132","148"],ans:1},{q:"Which gas do plants absorb from air?",opts:["Oxygen","Nitrogen","Carbon Dioxide","Hydrogen"],ans:2}],moderate:[{q:"What is the chemical symbol for gold?",opts:["Go","Gd","Au","Ag"],ans:2},{q:"Who wrote India's national anthem?",opts:["Rabindranath Tagore","Bankim Chandra","Mahatma Gandhi","Nehru"],ans:0},{q:"What is √144?",opts:["11","12","13","14"],ans:1},{q:"Which organ purifies blood?",opts:["Heart","Lungs","Liver","Kidneys"],ans:3},{q:"How many bones in the adult human body?",opts:["196","206","216","226"],ans:1}],hard:[{q:"What is the powerhouse of the cell?",opts:["Nucleus","Ribosome","Mitochondria","Golgi Body"],ans:2},{q:"Which of these is NOT a prime number?",opts:["17","19","23","27"],ans:3},{q:"Speed of light is approximately:",opts:["3×10⁵ km/s","3×10⁸ m/s","3×10⁶ m/s","3×10⁴ km/s"],ans:1},{q:"Chemical formula for water?",opts:["HO","H₂O","H₃O","H₂O₂"],ans:1},{q:"Who gave the theory of relativity?",opts:["Newton","Faraday","Einstein","Bohr"],ans:2}]};
+  return b[section];
+}
+
+function renderQuestion(){
+  const q=currentQuiz.questions[currentQuiz.current],sec=currentQuiz.section;
+  const badge=document.getElementById('qsec-badge');
+  badge.textContent=LABELS[sec];badge.className='quiz-section-badge sec-badge '+(sec==='moderate'?'mod':sec);
+  document.getElementById('q-progress').style.width=((currentQuiz.current+1)/5*100)+'%';
+  document.getElementById('q-prog-text').textContent=`Question ${currentQuiz.current+1} of 5`;
+  document.getElementById('q-number').textContent=`Question ${currentQuiz.current+1}`;
+  document.getElementById('q-text').textContent=q.q;
+  const grid=document.getElementById('options-grid');
+  grid.innerHTML=['A','B','C','D'].map((l,i)=>`<button class="option-btn" onclick="selectOption(${i})" id="opt-${i}"><span class="opt-letter">${l}</span>${q.opts[i]}</button>`).join('');
+  document.getElementById('quiz-feedback').className='quiz-feedback';
+  document.getElementById('quiz-feedback').textContent='';
+  document.getElementById('next-btn-wrap').style.display='none';
+  currentQuiz.answered=false;startTimer();
+}
+
+function startTimer(){
+  clearInterval(timerInterval);timeLeft=30;
+  const el=document.getElementById('q-timer');el.textContent=timeLeft;el.className='q-timer';
+  timerInterval=setInterval(()=>{timeLeft--;el.textContent=timeLeft;if(timeLeft<=10)el.className='q-timer warn';if(timeLeft<=0){clearInterval(timerInterval);if(!currentQuiz.answered)autoFail();}},1000);
+}
+function autoFail(){
+  currentQuiz.answered=true;const q=currentQuiz.questions[currentQuiz.current];
+  document.getElementById('opt-'+q.ans).classList.add('correct');
+  showFeedback(false,"⏰ Time's up! Answer: "+q.opts[q.ans]);
+  document.querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  document.getElementById('next-btn-wrap').style.display='block';
+}
+function selectOption(idx){
+  if(currentQuiz.answered)return;clearInterval(timerInterval);currentQuiz.answered=true;
+  const q=currentQuiz.questions[currentQuiz.current],isOk=idx===q.ans;
+  document.getElementById('opt-'+idx).classList.add(isOk?'correct':'wrong');
+  if(!isOk)document.getElementById('opt-'+q.ans).classList.add('correct');
+  document.querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  if(isOk){currentQuiz.correct++;currentQuiz.pts+=POINTS[currentQuiz.section];showFeedback(true,'✅ Correct! +'+POINTS[currentQuiz.section]+' pt'+(POINTS[currentQuiz.section]>1?'s':''));}
+  else showFeedback(false,'❌ Wrong! Answer: '+q.opts[q.ans]);
+  document.getElementById('next-btn-wrap').style.display='block';
+}
+function showFeedback(ok,msg){const fb=document.getElementById('quiz-feedback');fb.textContent=msg;fb.className='quiz-feedback show '+(ok?'correct':'wrong');}
+function nextQuestion(){currentQuiz.current++;if(currentQuiz.current>=5)finishSection();else renderQuestion();}
+
+function finishSection(){
+  clearInterval(timerInterval);quizActive=false;
+  const prevTier=currentUser?getEvoTier(currentUser.pts||0):-1;
+  const e=currentQuiz.correct===5?'🏆':currentQuiz.correct>=3?'🎉':'💪';
+  document.getElementById('res-emoji').textContent=e;
+  document.getElementById('res-title').textContent=currentQuiz.correct===5?'Perfect Score!':currentQuiz.correct>=3?'Great Work!':'Keep Practicing!';
+  document.getElementById('res-pts').textContent='+'+currentQuiz.pts+' pts';
+  document.getElementById('res-sub').textContent=`You got ${currentQuiz.correct}/5 correct!`;
+  document.getElementById('rb-correct').textContent=currentQuiz.correct;
+  document.getElementById('rb-wrong').textContent=5-currentQuiz.correct;
+  document.getElementById('rb-earned').textContent=currentQuiz.pts;
+  if(currentUser){
+    currentUser.pts=(currentUser.pts||0)+currentQuiz.pts;
+    if(!currentUser.history)currentUser.history=[];
+    currentUser.history.unshift({date:new Date().toLocaleDateString('en-IN'),section:currentQuiz.section,score:currentQuiz.correct+'/5',pts:currentQuiz.pts});
+    if(currentUser.history.length>20)currentUser.history=currentUser.history.slice(0,20);
+    saveUsers();updateNav();
+    const newTier=getEvoTier(currentUser.pts);
+    if(newTier>prevTier)showToast(`🦸 Avatar evolved to ${EVO_TIERS[newTier].name} ${EVO_TIERS[newTier].emoji}!`,'success');
+    else showToast(`+${currentQuiz.pts} points saved! ⭐`,'success');
+  }
+  showScreen('result');
+}
+
+// ===== AVATAR BUILDER =====
+function openAvatarBuilder(){
+  if(!currentUser){openModal('login');return;}
+  const av=currentUser.avatar||{skin:0,hair:0,aura:'purple',heroName:''};
+  avatarState={...av};
+  document.getElementById('hero-name').value=av.heroName||currentUser.name.split(' ')[0];
+  updateAvatarPreview();
+  document.querySelectorAll('.skin-btn').forEach(b=>b.style.border=`2px solid ${b.dataset.skin==av.skin?'var(--accent)':'transparent'}`);
+  document.querySelectorAll('[data-hair]').forEach(b=>b.className='trait-btn'+(b.dataset.hair==av.hair?' active':''));
+  document.querySelectorAll('[data-aura]').forEach(b=>b.className='trait-btn'+(b.dataset.aura===av.aura?' active':''));
+  document.getElementById('avatar-modal').classList.add('show');
+}
+function setSkin(n){avatarState.skin=n;updateAvatarPreview();document.querySelectorAll('.skin-btn').forEach(b=>b.style.border=`2px solid ${b.dataset.skin==n?'var(--accent)':'transparent'}`);}
+function setHair(n){avatarState.hair=n;updateAvatarPreview();document.querySelectorAll('[data-hair]').forEach(b=>b.className='trait-btn'+(b.dataset.hair==n?' active':''));}
+function setAura(c){avatarState.aura=c;updateAvatarPreview();document.querySelectorAll('[data-aura]').forEach(b=>b.className='trait-btn'+(b.dataset.aura===c?' active':''));}
+function updateAvatarPreview(){
+  const tier=currentUser?getEvoTier(currentUser.pts||0):0;
+  const svg=drawHeroSVG({...avatarState,tier,size:120});
+  document.getElementById('ava-preview-big').innerHTML=svg;
+  document.getElementById('ava-evo-tag').textContent=EVO_TIERS[tier].name+' Hero '+EVO_TIERS[tier].emoji;
+}
+function saveAvatar(){
+  avatarState.heroName=document.getElementById('hero-name').value.trim()||currentUser.name.split(' ')[0];
+  currentUser.avatar={...avatarState};saveUsers();updateNav();closeModal('avatar-modal');showToast('Hero avatar saved! 🦸','success');
+}
+
+// ===== DASHBOARD =====
+function updateDashboard(){
+  if(!currentUser){showScreen('home');openModal('login');return;}
+  document.getElementById('dash-welcome').textContent=`Hey ${(currentUser.avatar?.heroName||currentUser.name.split(' ')[0])} 👋`;
+  document.getElementById('total-pts-dash').textContent=currentUser.pts||0;
+  document.getElementById('total-quizzes').textContent=(currentUser.history||[]).length;
+  const days=(currentUser.loginDays||[]).length;
+  document.getElementById('total-days').textContent=days;
+  const streak=currentUser.streak||1;
+  document.getElementById('streak-count').textContent=streak;
+  document.getElementById('streak-title').textContent=streak>=30?`${streak}-Day Streak! Legendary! 🔥🔥`:streak>=7?`${streak}-Day Streak! On Fire!`:`${streak}-Day Streak!`;
+  document.getElementById('streak-desc').textContent=streak>=180?'You are qualified for the lottery! 🎰':`${180-streak} more days for lottery qualification`;
+  const pct=Math.min(100,Math.round(days/180*100));
+  document.getElementById('lot-pct').textContent=pct+'%';
+  document.getElementById('lot-bar-fill').style.width=pct+'%';
+  document.getElementById('lot-label').textContent=pct>=100?'🎉 You are QUALIFIED for the lottery!':`${days}/180 active days completed`;
+  document.getElementById('lottery-desc').textContent=pct>=100?'Congratulations! Fully qualified for the next Hero Lottery draw!':`Stay active! ${Math.max(0,180-days)} more active days to qualify for the Grand Hero Lottery.`;
+  const pts=currentUser.pts||0,tier=getEvoTier(pts);
+  const av=currentUser.avatar||{};
+  const bigSvg=drawHeroSVG({skin:av.skin||0,hair:av.hair||0,aura:av.aura||'purple',tier,size:80});
+  document.getElementById('dash-avatar-wrap').innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer" onclick="openAvatarBuilder()"><div style="width:80px;height:80px">${bigSvg}</div><div style="font-size:12px;color:var(--accent2);font-weight:600">${EVO_TIERS[tier].emoji} ${EVO_TIERS[tier].name}</div><div style="font-size:11px;color:var(--text3)">Tap to customize</div></div>`;
+  renderEvoPath(tier,pts);
+  const tbody=document.getElementById('history-body');
+  const hist=currentUser.history||[];
+  if(!hist.length){tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--text3);padding:28px">No quizzes yet — start playing!</td></tr>';return;}
+  tbody.innerHTML=hist.slice(0,10).map(h=>`<tr><td>${h.date}</td><td><span class="badge b-${h.section==='moderate'?'mod':h.section}">${LABELS[h.section]||h.section}</span></td><td>${h.score}</td><td style="color:var(--amber);font-weight:600">+${h.pts} pts</td></tr>`).join('');
+}
+
+function renderEvoPath(currentTier,pts){
+  const container=document.getElementById('evo-path-display');
+  let html='';
+  EVO_TIERS.forEach((t,i)=>{
+    const reached=i<=currentTier,isCurrent=i===currentTier;
+    html+=`<div class="evo-step"><div class="evo-step-icon ${reached?'reached':''} ${isCurrent?'current':''}" title="${t.name} (${t.minPts}+ pts)">${t.emoji}</div><div class="evo-step-name">${t.name}</div></div>`;
+    if(i<EVO_TIERS.length-1)html+=`<div class="evo-arrow">${i<=currentTier?'→':'·'}</div>`;
+  });
+  container.innerHTML=html;
+  document.getElementById('evo-tier-name').textContent=`${EVO_TIERS[currentTier].emoji} ${EVO_TIERS[currentTier].name}`;
+  const next=EVO_TIERS[currentTier];
+  if(currentTier<EVO_TIERS.length-1){
+    const nxt=EVO_TIERS[currentTier+1];
+    const needed=nxt.minPts-pts;
+    document.getElementById('evo-next-info').textContent=`${needed} pts to → ${nxt.name} ${nxt.emoji}`;
+    const barPct=Math.round((pts-next.minPts)/(nxt.minPts-next.minPts)*100);
+    document.getElementById('evo-bar').style.width=Math.min(100,barPct)+'%';
+  }else{document.getElementById('evo-next-info').textContent='Max Evolution Reached! 🏆';document.getElementById('evo-bar').style.width='100%';}
+}
+
+function renderLeaderboard(){
+  const all=Object.values(users).sort((a,b)=>(b.pts||0)-(a.pts||0)).slice(0,10);
+  const medals=['🥇','🥈','🥉'];
+  const list=document.getElementById('lb-list');
+  if(!all.length){list.innerHTML='<div style="text-align:center;color:var(--text2);padding:60px">No heroes yet — be the first!</div>';return;}
+  list.innerHTML=all.map((u,i)=>{
+    const tier=getEvoTier(u.pts||0);
+    const av=u.avatar||{};
+    const svg=drawHeroSVG({skin:av.skin||0,hair:av.hair||0,aura:av.aura||'purple',tier,size:36});
+    return `<div class="lb-row"><div class="lb-rank">${medals[i]||'#'+(i+1)}</div><div style="width:36px;height:36px;flex-shrink:0">${svg}</div><div class="lb-name">${u.avatar?.heroName||u.name}<br><span class="lb-streak">${(u.loginDays||[]).length} days • ${EVO_TIERS[tier].emoji} ${EVO_TIERS[tier].name}</span></div><div class="lb-pts">⭐ ${u.pts||0}</div></div>`;
+  }).join('');
+}
+
+function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+type;setTimeout(()=>t.className='toast',3200);}
+
+window.addEventListener('load',()=>{const s=localStorage.getItem('kbh_session');if(s&&users[s])loginUser(s);});
+</script>
+</body>
+</html>
